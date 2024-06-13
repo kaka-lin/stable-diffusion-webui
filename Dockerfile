@@ -29,6 +29,17 @@ RUN apt-get -y update && \
     nodejs node-gyp nodejs-dev \
     npm
 
+# Upgrade Node.js to v18.x
+ENV DEBIAN_FRONTEND noninteractive
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    # upgrade GLIBC to 2.28
+    echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list && \ 
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 112695A0E562B32A 54404762BBB6E853 && \
+    apt-get update && \   
+    apt-get install -y libc6 libc6-dev && \
+    # install node 18.x
+    apt-get install -y nodejs 
+
 RUN apt-get -y autoremove && \
     apt-get -y autoclean && \
     apt-get -y clean && \
@@ -71,7 +82,9 @@ RUN git config --global --add safe.directory "*"
 RUN conda env create -f environment-wsl2.yaml
 RUN conda install cuda -c nvidia
 RUN conda activate automatic && \
-    pip3 --no-cache-dir install --upgrade pip setuptools wheel && \
+    pip3 --no-cache-dir install --upgrade pip wheel && \
+    # for fix error: ImportError: cannot import name 'packaging' from 'pkg_resources'
+    pip3 --no-cache-dir install setuptools==69.5.1 && \
     pip3 install transformers diffusers invisible-watermark --prefer-binary && \
     pip3 install opencv-python-headless && \
     pip3 install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 && \
