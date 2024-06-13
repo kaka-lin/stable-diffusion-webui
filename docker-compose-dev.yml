@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  stable_diffusion:
+    tty: true        # docker run -t
+    shm_size: 128gb
+    build: .
+    image: webui-docker
+    container_name: sd_webui
+    volumes:
+      - .:/stable-diffusion-webui
+    ports:
+      - 7860:7860 # stable diffusion ui
+    deploy: ## important
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1'] # specify the GPU device id
+              capabilities: [gpu]

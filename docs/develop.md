@@ -28,6 +28,8 @@
 
 ## 2. Creating new tab (Extension)
 
+> 實際範例請詳見 [extenstions/Segment](../extensions/Segment/)
+
 在 `extensions` floder 新增資料夾，並且新增:
 - `install.py`: 這個 tab 所需安裝的相關套件
 - `scripts/ui.py`: 
