@@ -2,6 +2,26 @@
 
 ## Quick Start
 
+### Prerequisite
+
+1. clone with submodule
+
+    ```
+    $ git clone --recursive https://github.com/kaka-lin/stable-diffusion-webui.git
+    ```
+
+2. update after clone
+
+    ```
+    $ git submodule update --init --recursive
+    ```
+
+    ##### Update the submodule to the latest remote commit, as below:
+
+    ```
+    $ git submodule update --remote --merge
+    ```
+
 ### Run on locally
 
 ```sh
