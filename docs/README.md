@@ -33,16 +33,22 @@ $ ./webui.sh
 #### Develop mode
 
 ```sh
-$ docker-compose -f docker-compose-dev.yml
+$ docker-compose -f docker-compose-dev.yml up -d
 $ docker exec -it sd_webui bash
+$ ./docker-entrypoint.sh # if first running
 $ python launch.py --listen --precision full --no-half --enable-insecure-extension-access --port 7860 --api
 ```
+- `--device-id <id>`: specify the GPU device id
 
 ### Production mode
 
 ```sh
 $ docker-compose up -d
 ```
+
+> You can use ```$ docker logs sd_webui``` to check the start progress
+
+After running (about one minute), you can access Stable Diffusion WebUI at http://localhost:7860. Enjoy! 😄
 
 ## Develop Guide
 

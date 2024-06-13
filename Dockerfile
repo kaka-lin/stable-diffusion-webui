@@ -2,6 +2,7 @@ FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu18.04
 
 # Ubuntu 18.04: tzdata issue
 # set noninteractive installation
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     software-properties-common \
@@ -30,7 +31,6 @@ RUN apt-get -y update && \
     npm
 
 # Upgrade Node.js to v18.x
-ENV DEBIAN_FRONTEND noninteractive
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     # upgrade GLIBC to 2.28
     echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list && \ 
