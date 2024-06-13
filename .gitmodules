@@ -1,3 +1,3 @@
 [submodule "gradio_components/gradio-image-prompter"]
 	path = gradio_components/gradio-image-prompter
-	url = https://github.com/kaka-lin/stable-diffusion-webui.git
+	url = https://github.com/kaka-lin/gradio-image-prompter.git
