@@ -35,14 +35,29 @@ $ ./webui.sh
 ```sh
 $ docker-compose -f docker-compose-dev.yml up -d
 $ docker exec -it sd_webui bash
-$ ./docker-entrypoint.sh # if first running
-$ python launch.py --listen --precision full --no-half --enable-insecure-extension-access --port 7860 --api
+
+# Prerequisite: need to install gradio-image-prompter
+$ cd /stable-diffusion-webui/gradio_components/gradio-image-prompter/frontend && npm install
+$ cd /stable-diffusion-webui/gradio_components/gradio-image-prompter && npm install && gradio cc install
+
+# Run the server
+$ cd /stable-diffusion-webui
+$ python launch.py --listen \
+    --precision full \
+    --no-half \
+    --enable-insecure-extension-access \
+    --device-id 1 \
+    --port 7860 \
+    --api
 ```
 - `--device-id <id>`: specify the GPU device id
 
 ### Production mode
 
 ```sh
+# only need run once
+$ chmod +x docker-entrypoint.sh 
+
 $ docker-compose up -d
 ```
 
