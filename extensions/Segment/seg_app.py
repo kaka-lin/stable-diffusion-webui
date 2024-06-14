@@ -11,18 +11,13 @@ from pathlib import Path
 
 from modules import shared, paths, script_callbacks
 from modules.ui_components import ToolButton
-from efficient_sam.build_efficient_sam import build_efficient_sam_vitt, build_efficient_sam_vits
+from gradio_demo import SegmentModel
 
 try:
     import webui  # in webui
     in_webui = True
 except:
     in_webui = False
-
-
-models = {}
-# Build the EfficientSAM-Ti model.
-models['efficientsam_ti'] = build_efficient_sam_vitt()
 
 
 def get_img_from_txt2img():
@@ -60,40 +55,9 @@ def save_files(images):
     return gr.File(value=fullfns, visible=True)
 
 
-def run_model(prompts):
-    test_image = prompts["image"]
-    points_prompts = prompts["points"]
-
-    # processing the image
-    input_image = transforms.ToTensor()(test_image)
-
-    # processing the points to point and label
-    for points in points_prompts:
-        
-        input_points = torch.tensor([[[[points[0], points[1]], [points[3], points[4]]]]])
-        input_labels = torch.tensor([[[points[2], points[5]]]])
-
-    # Run inference for both EfficientSAM-Ti models.
-    for model_name, model in models.items():
-        print('Running inference using ', model_name)
-        predicted_logits, predicted_iou = model(
-            input_image[None, ...],
-            input_points,
-            input_labels,
-        )
-        sorted_ids = torch.argsort(predicted_iou, dim=-1, descending=True)
-        predicted_iou = torch.take_along_dim(predicted_iou, sorted_ids, dim=2)
-        predicted_logits = torch.take_along_dim(
-            predicted_logits, sorted_ids[..., None, None], dim=2
-        )
-
-        mask = torch.ge(predicted_logits[0, 0, 0, :, :], 0).cpu().detach().numpy()
-        masked_image_np = test_image.copy().astype(np.uint8) * mask[:,:,None]
-
-    return (masked_image_np, points_prompts)
-
-
 def sam_demo():
+    segment_model = SegmentModel()
+   
     with gr.Blocks() as sam_interface:
         with gr.Row():
             with gr.Column(variant='panel'):
@@ -125,10 +89,10 @@ def sam_demo():
             outputs=source_image)
 
         prompt_button.click(
-            fn=run_model,
+            fn=segment_model.run_model,
             inputs=source_image,
             outputs=[output_image, output_points])
-    
+
         save_button.click(
             fn=save_files,
             inputs=[output_image],

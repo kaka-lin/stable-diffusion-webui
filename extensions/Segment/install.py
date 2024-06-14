@@ -1,9 +1,10 @@
 import launch
 from modules import paths
 
+
 # install the requirement module 
 if not launch.is_installed("gradio_image_prompter"):
-    component_path = f"{paths.script_path}/gradio_components/gradio-image-prompter"
+    component_path = f"gradio_components/gradio-image-prompter"
     component_frontend_path = component_path + "/frontend"
 
     # launch.run_pip("install gradio_image_prompter", "requirements for Segment extension")

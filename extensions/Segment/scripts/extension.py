@@ -17,4 +17,5 @@ def on_ui_tabs():
     #  (gradio_component, title, elem_id)
     return [(sam_image, "Segment", "Segment")]
 
+
 script_callbacks.on_ui_tabs(on_ui_tabs)
