@@ -28,7 +28,7 @@
 $ ./webui.sh   
 ```
 
-### Run with Docker
+### Run with Docker (Linux with GPU)
 
 #### Develop mode
 

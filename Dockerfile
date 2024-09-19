@@ -93,7 +93,7 @@ RUN conda activate automatic && \
 
 RUN rm environment-wsl2.yaml && rm requirements_versions.txt
 
-# Setting defaule command arguments for sd_webui
+# Setting default command arguments for sd_webui
 ENV COMMANDLINE_ARGS="--disable-safe-unpickle"
 
 VOLUME /stable-diffusion-webui
