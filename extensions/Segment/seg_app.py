@@ -11,7 +11,7 @@ from pathlib import Path
 
 from modules import shared, paths, script_callbacks
 from modules.ui_components import ToolButton
-from gradio_demo import SegmentModel
+from extensions.Segment.gadio_demo import SegmentModel
 
 try:
     import webui  # in webui
