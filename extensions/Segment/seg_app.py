@@ -2,6 +2,7 @@ import os, sys
 import glob
 
 import cv2
+from PIL import Image
 import numpy as np
 import torch
 from torchvision import transforms
@@ -44,12 +45,12 @@ def save_files(images):
     fullfns = []
 
     # make output dir
-    saved_path = paths.script_path + "log/images/"
+    saved_path = paths.script_path + "/log/images/"
     os.makedirs(saved_path, exist_ok=True)
 
     # save image for download
     output_image = saved_path + 'output.png'
-    cv2.imwrite(output_image, images)
+    Image.fromarray(images).save(output_image)
     fullfns.append(output_image)
 
     return gr.File(value=fullfns, visible=True)
@@ -74,7 +75,7 @@ def sam_demo():
             with gr.Column(variant='panel'):
                 with gr.Tabs("sam_genearted"):
                     with gr.TabItem('Result image'):
-                        output_image = gr.Image(show_label=False, interactive=False)
+                        output_image = gr.Image(show_label=False, interactive=False, image_mode='RGBA')
                         output_points = gr.Dataframe(label="Points")
 
                         save_button = ToolButton('💾', elem_id=f'save_sam')
