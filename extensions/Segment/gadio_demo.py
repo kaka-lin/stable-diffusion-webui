@@ -12,25 +12,22 @@ class SegmentModel():
         pass 
 
     def process_points(self, points_prompts):
-        # TODO: multi box segmentation
         # input_points: [batch_size, num_queries, max_num_pts, 2], 2: x, y
         # input_labels: [batch_size, num_queries, max_num_pts], 1: point, 2: box topleft, 3: box bottomright, 4: None
-        num_queries = 1
-        input_points, input_labels = [[] for _ in range(num_queries)],  [[] for _ in range(num_queries)]
-        point_list, label_list = [], []
-        for idx, points in enumerate(points_prompts):
-            if points[2] == 2:
-                point_list.append([points[0], points[1]])
-                point_list.append([points[3], points[4]])
-                label_list.append(points[2])
-                label_list.append(points[5])
-            else:
-                point_list.append([points[0], points[1]])
-                label_list.append(points[2])
-        input_points[0].append(point_list)
-        input_labels[0].append(label_list)
-        input_points = torch.FloatTensor(input_points)
-        input_labels = torch.FloatTensor(input_labels)
+        input_points = []
+        input_labels = []
+        # processing the points to point and label
+        for points in points_prompts:
+            if points[2] == 1.0:
+                input_points.append([points[0], points[1]])
+                input_labels.extend([points[2]])
+            elif points[2] == 2.0 and points[5] == 3.0:
+                input_points.append([points[0], points[1]])
+                input_points.append([points[3], points[4]])
+                input_labels.extend([points[2], points[5]])
+        
+        input_points = torch.reshape(torch.FloatTensor(input_points), [1, 1, -1, 2])
+        input_labels = torch.reshape(torch.FloatTensor(input_labels), [1, 1, -1])
 
         return input_points, input_labels
     
